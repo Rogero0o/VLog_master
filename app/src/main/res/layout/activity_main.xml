@@ -10,7 +10,7 @@
             android:layout_height="match_parent"/>
 
     <ImageButton
-            android:background="null"
+            android:background="@null"
             android:src="@drawable/ic_shutter_stopped"
             android:id="@+id/main_record_btn"
             android:layout_width="wrap_content"

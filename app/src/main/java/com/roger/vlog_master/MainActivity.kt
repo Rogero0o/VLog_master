@@ -1,7 +1,6 @@
 package com.roger.vlog_master
 
 import android.Manifest
-import android.content.DialogInterface
 import android.hardware.Camera
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

@@ -1,7 +1,6 @@
 package com.roger.vlog_master.jcodec
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Base64
 import android.util.Log
@@ -46,7 +45,6 @@ class ListCache private constructor(private val mContext: Context) {
         get() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
             val str = prefs.getString(LIST_IFRAME_KEY, "")
-            Log.i("Tag", "getIFRAMESizes:" + str!!)
             return gson.fromJson(str, object : TypeToken<IntArrayList>() {
 
             }.type)
@@ -84,7 +82,6 @@ class ListCache private constructor(private val mContext: Context) {
         get() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
             val array = Base64.decode(prefs.getString(SPS, ""), Base64.DEFAULT)
-            Log.i("Tag", "getSPS:" + array.size)
             return array
         }
 
@@ -92,7 +89,6 @@ class ListCache private constructor(private val mContext: Context) {
         get() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
             val array = Base64.decode(prefs.getString(PPS, ""), Base64.DEFAULT)
-            Log.i("Tag", "getPPS:" + array.size)
             return array
         }
 
@@ -103,7 +99,7 @@ class ListCache private constructor(private val mContext: Context) {
 
     private fun getAutoTestLogBeanCache(mContext: Context): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
-        return prefs.getString(LIST_KEY, "")
+        return prefs.getString(LIST_KEY, "")?:""
     }
 
     private fun setAutoTestLogBeanCache(mContext: Context, str: String) {
@@ -119,7 +115,6 @@ class ListCache private constructor(private val mContext: Context) {
 
     fun saveIFRAMESizes(sampleSizes: IntArrayList) {
         val jsonStr = gson.toJson(sampleSizes)
-        Log.i("Tag", "saveIFRAMESizes:$jsonStr")
         val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
         prefs.edit().putString(LIST_IFRAME_KEY, jsonStr).apply()
     }
@@ -144,29 +139,27 @@ class ListCache private constructor(private val mContext: Context) {
 
     fun saveSPS(bytes: ByteArray) {
         val saveThis = Base64.encodeToString(bytes, Base64.DEFAULT)
-        Log.i("Tag", "saveSPS:" + saveThis.length)
         val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
         prefs.edit().putString(SPS, saveThis).apply()
     }
 
     fun savePPS(bytes: ByteArray) {
         val saveThis = Base64.encodeToString(bytes, Base64.DEFAULT)
-        Log.i("Tag", "savePPS:" + saveThis.length)
         val prefs = PreferenceManager.getDefaultSharedPreferences(mContext.applicationContext)
         prefs.edit().putString(PPS, saveThis).apply()
     }
 
     companion object {
 
-        private val LIST_KEY = "LIST_KEY"
-        private val LIST_SampleSizes_KEY = "sampleSizes_key"
-        private val LIST_IFRAME_KEY = "sampleIFRAMESizes_key"
-        private val LIST_SampleDurations_KEY = "sampleDurations_key"
-        private val LIST_chunkOffsets_KEY = "chunkOffsets_key"
-        private val LAST_INDEX = "last_index"
+        private const val LIST_KEY = "LIST_KEY"
+        private const val LIST_SampleSizes_KEY = "sampleSizes_key"
+        private const val LIST_IFRAME_KEY = "sampleIFRAMESizes_key"
+        private const val LIST_SampleDurations_KEY = "sampleDurations_key"
+        private const val LIST_chunkOffsets_KEY = "chunkOffsets_key"
+        private const val LAST_INDEX = "last_index"
 
-        private val SPS = "sps"
-        private val PPS = "pps"
+        private const val SPS = "sps"
+        private const val PPS = "pps"
         @Volatile
         private var mInstance: ListCache? = null
 

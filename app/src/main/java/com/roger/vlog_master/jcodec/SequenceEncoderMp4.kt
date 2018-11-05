@@ -2,6 +2,7 @@ package com.roger.vlog_master.jcodec
 
 import android.content.Context
 import android.util.Log
+import com.roger.vlog_master.utils.MIN_FILE_SIZE
 
 import org.jcodec.codecs.h264.H264Utils
 import org.jcodec.codecs.h264.io.model.NALUnit
@@ -24,9 +25,6 @@ import org.jcodec.codecs.h264.H264Utils.createMOVSampleEntry
 
 
 class SequenceEncoderMp4
-
-
-
 @Throws(IOException::class)
 constructor(out: File, private val context: Context) {
 
@@ -57,11 +55,11 @@ constructor(out: File, private val context: Context) {
         }
 
         this.ch = FileChannelWrapper(RandomAccessFile(out, "rw").channel)
-        if (size > 100) {
+        if (size > MIN_FILE_SIZE) {
             ch.position(size)
         }
 
-        muxer = MyMuxerMp4(ch, Brand.MP4, size < 100)
+        muxer = MyMuxerMp4(ch, Brand.MP4, size < MIN_FILE_SIZE)
 
         // Add video track to muxer
         outTrack = muxer.addTrack(TrackType.VIDEO, timeScale)
@@ -74,8 +72,8 @@ constructor(out: File, private val context: Context) {
 
         isFinished = false
 
-        if (size > 100) {
-            setFrameNo(ListCache.getInstance(context)!!.lastIndex.toInt())
+        if (size > MIN_FILE_SIZE) {
+            setFrameNo(ListCache.getInstance(context).lastIndex.toInt())
         }
     }
 
@@ -139,7 +137,6 @@ constructor(out: File, private val context: Context) {
 
     @Throws(IOException::class)
     fun finish() {
-
         if (isFinished) {
             return
         }
@@ -193,12 +190,10 @@ constructor(out: File, private val context: Context) {
         fun getFileSize(file: File): Long {
             var size: Long = 0
             if (file.exists()) {
-                var fis: FileInputStream? = null
-                fis = FileInputStream(file)
+                val fis = FileInputStream(file)
                 size = fis.available().toLong()
             } else {
                 file.createNewFile()
-                Log.e("获取文件大小", "文件不存在!")
             }
             return size
         }

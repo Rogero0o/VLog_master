@@ -37,14 +37,14 @@ import org.jcodec.containers.mp4.TrackType.VIDEO
  */
 
 class MyMuxerMp4 @Throws(IOException::class)
-constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: Boolean) {
+constructor(private var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: Boolean) {
     private val tracks = ArrayList<AbstractMP4MuxerTrack>()
-    protected var mdatOffset: Long = 0
+    private var mdatOffset: Long = 0
 
     private var nextTrackId = 1
     private val reWrite: Boolean = false
 
-    val videoTrack: AbstractMP4MuxerTrack?
+    private val videoTrack: AbstractMP4MuxerTrack?
         get() {
             for (frameMuxer in tracks) {
                 if (frameMuxer.isVideo) {
@@ -64,17 +64,6 @@ constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: 
             return null
         }
 
-    val audioTracks: List<AbstractMP4MuxerTrack>
-        get() {
-            val result = ArrayList<AbstractMP4MuxerTrack>()
-            for (frameMuxer in tracks) {
-                if (frameMuxer.isAudio) {
-                    result.add(frameMuxer)
-                }
-            }
-            return result
-        }
-
     @Throws(IOException::class)
     @JvmOverloads constructor(output: SeekableByteChannel, brand: Brand = Brand.MP4, reWrite: Boolean = true) : this(output, brand.fileTypeBox, reWrite)
 
@@ -92,7 +81,7 @@ constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: 
     }
 
     fun addVideoTrackWithTimecode(fourcc: String, size: Size, encoderName: String, timescale: Int): FramesMP4MuxerTrack2 {
-        val timecode = addTimecodeTrack(timescale)
+        val timecode = addTimeCodeTrack(timescale)
 
         val track = addTrack(VIDEO, timescale)
 
@@ -109,7 +98,7 @@ constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: 
         return track
     }
 
-    fun addTimecodeTrack(timescale: Int): TimecodeMP4MuxerTrack {
+    private fun addTimeCodeTrack(timescale: Int): TimecodeMP4MuxerTrack {
         val track = TimecodeMP4MuxerTrack(out, nextTrackId++, timescale)
         tracks.add(track)
         return track
@@ -121,7 +110,7 @@ constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: 
         return track
     }
 
-    fun addPCMTrack(timescale: Int, sampleDuration: Int, sampleSize: Int,
+    private fun addPCMTrack(timescale: Int, sampleDuration: Int, sampleSize: Int,
                     se: SampleEntry): PCMMP4MuxerTrack {
         val track = PCMMP4MuxerTrack(out, nextTrackId++, SOUND, timescale, sampleDuration, sampleSize, se)
         tracks.add(track)
@@ -241,7 +230,7 @@ constructor(protected var out: SeekableByteChannel, ftyp: FileTypeBox, reWrite: 
             return LeafBox(Header(String(ByteArray(4))), ByteBuffer.allocate(0))
         }
 
-        fun lookupFourcc(format: AudioFormat): String {
+        private fun lookupFourcc(format: AudioFormat): String {
             return if (format.sampleSizeInBits == 16 && !format.isBigEndian)
                 "sowt"
             else if (format.sampleSizeInBits == 24)
