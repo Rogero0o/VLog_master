@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -9,16 +10,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <ImageButton
-            android:background="@null"
-            android:src="@drawable/ic_shutter_stopped"
-            android:id="@+id/main_record_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+    <com.roger.shootrefreshview.ShootRefreshView
+            android:id="@+id/shoot_refresh_view"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:strokeColor="@color/colorWhite"
+            app:gradientStartColor="@color/colorRed"
+            app:gradientEndColor="@color/colorRed"
+            app:strokeWidth="5dp"/>
 
 </RelativeLayout>

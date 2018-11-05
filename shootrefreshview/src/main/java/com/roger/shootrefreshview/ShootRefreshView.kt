@@ -1,5 +1,6 @@
 package com.roger.shootrefreshview
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
@@ -9,6 +10,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Property
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 
 class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -38,12 +40,13 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mShootLineRotateAnimator: ValueAnimator? = null
     private var mShootLineStretchAnimator: ValueAnimator? = null
     private var mOutRingRotateAnimator: ValueAnimator? = null
+    private var linearInterpolator: LinearInterpolator?=null
+    private var animation: ValueAnimator? = null
 
     init {
         resolveAttrs(context, attrs)
         initPaint()
         initAnimator()
-
         reset()
     }
 
@@ -122,6 +125,7 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
 
         //Step4: Perform a refresh animation, rotate the gradient ring
         mOutRingRotateAnimator = ValueAnimator.ofFloat(0.toFloat(), DEGREE_360)
+        mOutRingRotateAnimator!!.repeatMode = ValueAnimator.REVERSE
         mOutRingRotateAnimator!!.repeatCount = ValueAnimator.INFINITE
         mOutRingRotateAnimator!!.interpolator = LinearInterpolator()
         mOutRingRotateAnimator!!.duration = OUT_RING_ROTATE_DURATION.toLong()
@@ -129,6 +133,26 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
             mOutRingRotateAngle = animation.animatedValue as Float
             invalidate()
         }
+        animation = ValueAnimator.ofFloat(0.toFloat(),1.toFloat())
+        linearInterpolator = LinearInterpolator()
+        animation?.interpolator = linearInterpolator
+        animation?.duration = 500
+        animation?.addUpdateListener {
+            val progress = it.animatedValue as Float
+            pullProgress(0.toFloat(), progress)
+        }
+        animation?.addListener(object :Animator.AnimatorListener{
+            override fun onAnimationStart(animation: Animator?) {
+            }
+            override fun onAnimationEnd(animation: Animator?) {
+                refreshing()
+            }
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+        })
+
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -145,10 +169,15 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
             if (mPaint.shader !== mRefreshingShader) {
                 mPaint.shader = mRefreshingShader
             }
+            mPaint.strokeWidth = mRadius.toFloat()/2 + (mOutRingRotateAngle * mRadius.toFloat()) / (360 * 2)
+            canvas.drawCircle(
+                0.0f, 0.0f, mRadius.toFloat() / 4
+                        + (mOutRingRotateAngle * mRadius.toFloat()) / (360 * 4), mPaint
+            )
         } else {
             mPaint.shader = null
         }
-
+        mPaint.strokeWidth = mStrokeWidth.toFloat()
         canvas.drawCircle(0.0f, 0.0f, mRadius.toFloat(), mPaint)
         canvas.restore()
     }
@@ -224,6 +253,14 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
         invalidate()
     }
 
+    fun start(){
+        animation?.start()
+    }
+
+    fun isStarted():Boolean{
+        return mOutRingRotateAnimator!!.isRunning
+    }
+
     override fun refreshing() {
         mOutRingRotateAngle = 0.0f
         mShootLineTotalRotateAngle = 0.0f
@@ -277,7 +314,7 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
         private const val PRE_SHOOT_LINE_TOTAL_ROTATE_DURATION = 10000
         private const val SHOOT_LINE_ROTATE_DURATION = 5000
         private const val SHOOT_LINE_STRETCH_DURATION = 500
-        private const val OUT_RING_ROTATE_DURATION = 500
+        private const val OUT_RING_ROTATE_DURATION = 1000
 
         private const val TOTAL_DURATION = PRE_SHOOT_LINE_TOTAL_ROTATE_DURATION +
                 SHOOT_LINE_ROTATE_DURATION + SHOOT_LINE_STRETCH_DURATION

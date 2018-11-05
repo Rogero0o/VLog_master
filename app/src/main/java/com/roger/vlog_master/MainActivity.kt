@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initView()
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
-
         record_surface.holder.addCallback(this)
         record_surface.setOnClickListener {
             cameraUtils.cameraFocus(this)
@@ -30,7 +30,17 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     }
 
-    private fun init(){
+    private fun initView(){
+        shoot_refresh_view.setOnClickListener {
+            if(shoot_refresh_view.isStarted()){
+                shoot_refresh_view.reset()
+            }else {
+                shoot_refresh_view.start()
+            }
+        }
+    }
+
+    private fun initJcodec(){
 
     }
 
@@ -41,7 +51,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     @PermissionSuccess(requestCode = REQUEST_CAMERA_PERMISSION_CODE)
     fun onPermissionGranted() {
-        init()
+        initJcodec()
         cameraUtils.setOnPreviewResult(this)
         cameraUtils.createCamera()
         cameraUtils.startPreview()
