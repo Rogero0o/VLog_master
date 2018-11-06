@@ -1,22 +1,33 @@
+@file:Suppress("DEPRECATION")
+
 package com.roger.vlog_master
 
 import android.Manifest
 import android.hardware.Camera
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.SurfaceHolder
-import com.roger.vlog_master.utils.CameraUtils
-import com.roger.vlog_master.utils.REQUEST_CAMERA_PERMISSION_CODE
+import com.roger.vlog_master.jcodec.ListCache
+import com.roger.vlog_master.jcodec.MediaMuxerUtils
+import com.roger.vlog_master.jcodec.SequenceEncoderMp4
+import com.roger.vlog_master.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.namee.permissiongen.PermissionFail
 import kr.co.namee.permissiongen.PermissionGen
 import kr.co.namee.permissiongen.PermissionSuccess
+import java.io.IOException
+import java.lang.ref.WeakReference
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult, CameraUtils.OnCameraFocusResult {
 
 
     private lateinit var cameraUtils: CameraUtils
+    private val delayHandler = DelayHandler(this)
+    private var shouldCatchPreview: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +45,34 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         shoot_refresh_view.setOnClickListener {
             if(shoot_refresh_view.isStarted()){
                 shoot_refresh_view.reset()
+                finishShootAndMakeFile()
             }else {
                 shoot_refresh_view.start()
+                beginShoot()
             }
         }
     }
 
     private fun initJcodec(){
+        val file = FileUtils.getFile(this)
+        try {
+            SequenceEncoderMp4.instance = SequenceEncoderMp4(file, this)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+    private fun beginShoot(){
+        delayHandler.sendEmptyMessage(HANDLER_SHOOT_WHAT)
+    }
 
+    fun continueShoot(){
+        delayHandler.sendEmptyMessageDelayed(HANDLER_SHOOT_WHAT,HANDLER_SHOOT_DELAY)
+    }
+
+    private fun finishShootAndMakeFile(){
+        delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
+        SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
+        SequenceEncoderMp4.instance?.finish()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
@@ -78,6 +109,12 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     override fun onPreviewResult(data: ByteArray, camera: Camera) {
+        cameraUtils.cameraInstance.addCallbackBuffer(data)
+        if (shouldCatchPreview) {
+            Log.d(LOG_TAG, "---PreviewCatch---:$data")
+            MediaMuxerUtils.muxerRunnableInstance.addVideoFrameData(data)
+            shouldCatchPreview = false
+        }
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -97,6 +134,20 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         cameraUtils.stopPreivew()
         cameraUtils.destroyCamera()
+    }
+
+    private class DelayHandler(activity: MainActivity) : Handler() {
+        private val mActivity: WeakReference<MainActivity> = WeakReference(activity)
+
+        override fun handleMessage(msg: Message) {
+            if(msg.what == HANDLER_SHOOT_WHAT) {
+                val activity = mActivity.get()
+                if (activity != null) {
+                    activity.shouldCatchPreview = true
+                    activity.continueShoot()
+                }
+            }
+        }
     }
 
 }

@@ -14,7 +14,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 
 class CameraUtils private constructor() {
-    private lateinit var cameraInstance: Camera
+    lateinit var cameraInstance: Camera
     private var cameraDirection = false
     private var mPreviewListener: OnPreviewFrameResult? = null
     private var mHolderRef: WeakReference<SurfaceHolder>? = null
