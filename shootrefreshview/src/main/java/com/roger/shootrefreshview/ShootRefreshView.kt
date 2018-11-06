@@ -10,6 +10,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Property
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 
@@ -127,7 +128,7 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
         mOutRingRotateAnimator = ValueAnimator.ofFloat(0.toFloat(), DEGREE_360)
         mOutRingRotateAnimator!!.repeatMode = ValueAnimator.REVERSE
         mOutRingRotateAnimator!!.repeatCount = ValueAnimator.INFINITE
-        mOutRingRotateAnimator!!.interpolator = LinearInterpolator()
+        mOutRingRotateAnimator!!.interpolator = AccelerateDecelerateInterpolator()
         mOutRingRotateAnimator!!.duration = OUT_RING_ROTATE_DURATION.toLong()
         mOutRingRotateAnimator!!.addUpdateListener { animation ->
             mOutRingRotateAngle = animation.animatedValue as Float
