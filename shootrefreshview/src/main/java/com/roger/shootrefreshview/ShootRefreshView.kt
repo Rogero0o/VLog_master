@@ -315,7 +315,7 @@ class ShootRefreshView @JvmOverloads constructor(context: Context, attrs: Attrib
         private const val PRE_SHOOT_LINE_TOTAL_ROTATE_DURATION = 10000
         private const val SHOOT_LINE_ROTATE_DURATION = 5000
         private const val SHOOT_LINE_STRETCH_DURATION = 500
-        private const val OUT_RING_ROTATE_DURATION = 800
+        private const val OUT_RING_ROTATE_DURATION = 1000
 
         private const val TOTAL_DURATION = PRE_SHOOT_LINE_TOTAL_ROTATE_DURATION +
                 SHOOT_LINE_ROTATE_DURATION + SHOOT_LINE_STRETCH_DURATION
