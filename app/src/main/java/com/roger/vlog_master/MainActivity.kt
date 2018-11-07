@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     override fun onPreviewResult(data: ByteArray, camera: Camera) {
-        cameraUtils.cameraInstance.addCallbackBuffer(data)
+        cameraUtils.cameraInstance?.addCallbackBuffer(data)
         if (shouldCatchPreview) {
             Log.d(LOG_TAG, "---PreviewCatch---:$data")
             MediaMuxerUtils.muxerRunnableInstance.addVideoFrameData(data)

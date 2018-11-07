@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.roger.vlog_master.utils
 
 import android.app.Activity
@@ -14,7 +16,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 
 class CameraUtils private constructor() {
-    lateinit var cameraInstance: Camera
+    var cameraInstance: Camera?=null
     var cameraDirection = false
     private var mPreviewListener: OnPreviewFrameResult? = null
     private var mHolderRef: WeakReference<SurfaceHolder>? = null
@@ -46,9 +48,9 @@ class CameraUtils private constructor() {
         }
 
     val previewFormat: Int
-        get() = if (!::cameraInstance.isInitialized) {
+        get() = if (cameraInstance == null) {
             -1
-        } else cameraInstance.parameters.previewFormat
+        } else cameraInstance!!.parameters.previewFormat
 
     var surfaceHolder: SurfaceHolder?
         get() = if (mHolderRef == null) {
@@ -75,19 +77,19 @@ class CameraUtils private constructor() {
     }
 
     fun startPreview() {
-        if (!::cameraInstance.isInitialized) {
+        if (cameraInstance == null) {
             return
         }
         try {
             Log.i(TAG, "CameraManager-->begin preview")
-            cameraInstance.setPreviewDisplay(mHolderRef!!.get())
+            cameraInstance!!.setPreviewDisplay(mHolderRef!!.get())
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
         //begin preview Camera
         try {
-            cameraInstance.startPreview()
+            cameraInstance!!.startPreview()
         } catch (e: RuntimeException) {
             Log.i(TAG, "begin preview Camera fail，reopen Camera.")
             stopPreivew()
@@ -97,22 +99,23 @@ class CameraUtils private constructor() {
         }
 
         //autoFocus
-        cameraInstance.autoFocus(null)
-        val previewFormat = cameraInstance.parameters.previewFormat
-        val previewSize = cameraInstance.parameters.previewSize
+        cameraInstance!!.autoFocus(null)
+        val previewFormat = cameraInstance!!.parameters.previewFormat
+        val previewSize = cameraInstance!!.parameters.previewSize
         val size = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8
-        cameraInstance.addCallbackBuffer(ByteArray(size))
-        cameraInstance.setPreviewCallbackWithBuffer(previewCallback)
+        cameraInstance!!.addCallbackBuffer(ByteArray(size))
+        cameraInstance!!.setPreviewCallbackWithBuffer(previewCallback)
     }
 
     fun stopPreivew() {
-        if (!::cameraInstance.isInitialized) {
+        if (cameraInstance == null) {
             return
         }
         try {
-            cameraInstance.setPreviewDisplay(null)
-            cameraInstance.setPreviewCallbackWithBuffer(null)
-            cameraInstance.stopPreview()
+            cameraInstance!!.setPreviewDisplay(null)
+            cameraInstance!!.setPreviewCallbackWithBuffer(null)
+            cameraInstance!!.stopPreview()
+            cameraInstance = null
             Log.i(TAG, "CameraManager-->stop camera preview")
         } catch (e: IOException) {
             e.printStackTrace()
@@ -126,7 +129,7 @@ class CameraUtils private constructor() {
     }
 
     fun openCamera() {
-        if (::cameraInstance.isInitialized) {
+        if (cameraInstance != null) {
             stopPreivew()
             destroyCamera()
         }
@@ -159,14 +162,14 @@ class CameraUtils private constructor() {
     }
 
     fun destroyCamera() {
-        cameraInstance.release()
+        cameraInstance!!.release()
         Log.i(TAG, "CameraManager-->release camera")
     }
 
     private fun setCamParameters() {
-        if (!::cameraInstance.isInitialized)
+        if (cameraInstance == null)
             return
-        val params = cameraInstance.parameters
+        val params = cameraInstance!!.parameters
         if (isUsingYv12) {
             params.previewFormat = ImageFormat.YV12
         } else {
@@ -184,14 +187,14 @@ class CameraUtils private constructor() {
         params.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT)
         val max = determineMaximumSupportedFramerate(params)
         params.setPreviewFpsRange(max[0], max[1])
-        cameraInstance.parameters = params
+        cameraInstance!!.parameters = params
         val rotateDegree = previewRotateDegree
-        cameraInstance.setDisplayOrientation(rotateDegree)
+        cameraInstance!!.setDisplayOrientation(rotateDegree)
     }
 
     fun cameraFocus(listener: OnCameraFocusResult?) {
-        if (::cameraInstance.isInitialized) {
-            cameraInstance.autoFocus { success, camera ->
+        if (cameraInstance != null) {
+            cameraInstance!!.autoFocus { success, camera ->
                 listener?.onFocusResult(success)
             }
         }
