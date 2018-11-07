@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 match:text="VLog master"
-                match:textSize="15sp"
+                match:textSize="18sp"
                 match:textColor="@color/colorWhite"
         />
     </RelativeLayout>
