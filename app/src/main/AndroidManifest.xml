@@ -15,7 +15,9 @@
             android:theme="@style/AppTheme">
         <activity
                 android:name=".MainActivity"
-                android:theme="@style/MaterialTheme">
+                android:theme="@style/MaterialTheme"
+                android:launchMode="singleTask"
+                android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

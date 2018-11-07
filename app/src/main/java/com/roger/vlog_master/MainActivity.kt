@@ -3,14 +3,17 @@
 package com.roger.vlog_master
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.view.SurfaceHolder
+import android.view.View
+import com.roger.match.library.util.Utils
 import com.roger.vlog_master.jcodec.ListCache
 import com.roger.vlog_master.jcodec.MediaMuxerUtils
 import com.roger.vlog_master.jcodec.SequenceEncoderMp4
@@ -35,14 +38,13 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         setContentView(R.layout.activity_main)
         initView()
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
+    }
+
+    private fun initView() {
         record_surface.holder.addCallback(this)
         record_surface.setOnClickListener {
             cameraUtils.cameraFocus(this)
         }
-
-    }
-
-    private fun initView() {
         shoot_refresh_view.setOnClickListener {
             if (shoot_refresh_view.isStarted()) {
                 shoot_refresh_view.reset()
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
                 beginShoot()
             }
         }
+
+        matchTextView.setLineWidth(Utils.dp2px(5f))
+        matchTextView.setInTime(0.3f)
+        matchTextView.loadingAniDuration = 300
     }
 
     private fun initJcodec() {
@@ -116,7 +122,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun onPreviewResult(data: ByteArray, camera: Camera) {
         cameraUtils.cameraInstance?.addCallbackBuffer(data)
         if (shouldCatchPreview) {
-            Log.d(LOG_TAG, "---PreviewCatch---:$data")
             MediaMuxerUtils.muxerRunnableInstance.addVideoFrameData(data)
             shouldCatchPreview = false
         }
@@ -124,13 +129,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         cameraUtils.surfaceHolder = holder
-        PermissionGen.with(this@MainActivity)
-            .addRequestCode(REQUEST_CAMERA_PERMISSION_CODE)
-            .permissions(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-            .request()
+        delayHandler.sendEmptyMessageDelayed(HANDLER_PREVIEW_WHAT,2450)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -141,15 +140,43 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         cameraUtils.destroyCamera()
     }
 
+    fun isPermissionOK(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun hideLoading(){
+        loadingContainer.visibility = View.GONE
+    }
+
     private class DelayHandler(activity: MainActivity) : Handler() {
         private val mActivity: WeakReference<MainActivity> = WeakReference(activity)
 
         override fun handleMessage(msg: Message) {
-            if (msg.what == HANDLER_SHOOT_WHAT) {
-                val activity = mActivity.get()
-                if (activity != null) {
+            val activity = mActivity.get()
+            activity?.let {
+                if (msg.what == HANDLER_SHOOT_WHAT) {
                     activity.shouldCatchPreview = true
                     activity.continueShoot()
+                } else if (msg.what == HANDLER_PREVIEW_WHAT) {
+                    if (!activity.isPermissionOK()) {
+                        PermissionGen.with(activity)
+                            .addRequestCode(REQUEST_CAMERA_PERMISSION_CODE)
+                            .permissions(
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
+                            .request()
+                    } else {
+                        activity.onPermissionGranted()
+                    }
+                    activity.hideLoading()
                 }
             }
         }

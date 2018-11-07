@@ -34,4 +34,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.lovedise:permissiongen:0.0.6'
     implementation project(':shootrefreshview')
+    implementation 'com.roger.match.library:library:1.0.1'
 }
