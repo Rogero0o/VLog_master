@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun initJcodec() {
-        val file = FileUtils.getFile(this)
+        val file = FileUtils.getFile()
         try {
             SequenceEncoderMp4.instance = SequenceEncoderMp4(file, this)
         } catch (e: IOException) {
