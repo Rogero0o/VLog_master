@@ -14,7 +14,7 @@ class MediaMuxerUtils private constructor() {
 
     private val lock = java.lang.Object()
     private var mMuxerDatas: Vector<MuxerData>? = null
-    private var videoRunnable: EncoderVideoRunnable? = null
+    private lateinit var videoRunnable: EncoderVideoRunnable
     private var mMuxerThread: Thread? = null
     private var mVideoThread: Thread? = null
     private var isFrontCamera: Boolean = false
@@ -24,8 +24,8 @@ class MediaMuxerUtils private constructor() {
         mMuxerDatas = Vector()
         videoRunnable = EncoderVideoRunnable(WeakReference(this))
         mVideoThread = Thread(videoRunnable)
-        videoRunnable!!.isFrontCamera = isFrontCamera
-        videoRunnable!!.isPhoneHorizontal = isHorizontal
+        videoRunnable.isFrontCamera = isFrontCamera
+        videoRunnable.isPhoneHorizontal = isHorizontal
         mVideoThread!!.start()
         isExit = false
     }
@@ -55,7 +55,7 @@ class MediaMuxerUtils private constructor() {
                                 if (data.trackIndex == TRACK_VIDEO) {
                                     track = videoTrack
                                     Log.d(TAG, "---写入视频数据---")
-                                    SequenceEncoderMp4.instance!!.encodeNativeFrame(data.byteBuf)
+                                    SequenceEncoderMp4.instance?.encodeNativeFrame(data.byteBuf)
                                 }
                             } catch (e: Exception) {
                                 Log.e(TAG, "写入数据到混合器失败，track=$track")
@@ -117,12 +117,10 @@ class MediaMuxerUtils private constructor() {
 
     // 添加图像数据到视频编码器
     fun addVideoFrameData(frameData: ByteArray) {
-        if (videoRunnable != null) {
-            videoRunnable!!.addData(frameData)
-        }
+        videoRunnable.addData(frameData)
     }
 
-    fun startMuxerThread(isFrontCamera: Boolean,isHorizontal:Boolean) {
+    fun startMuxerThread(isFrontCamera: Boolean, isHorizontal: Boolean) {
         this.isFrontCamera = isFrontCamera
         this.isHorizontal = isHorizontal
         if (mMuxerThread == null) {
@@ -154,9 +152,7 @@ class MediaMuxerUtils private constructor() {
 
     private fun exit() {
         Log.d(TAG, "---停止混合器(录音、录像)线程---")
-        if (videoRunnable != null) {
-            videoRunnable!!.exit()
-        }
+        videoRunnable.exit()
         if (mVideoThread != null) {
             try {
                 mVideoThread!!.join()
@@ -173,7 +169,11 @@ class MediaMuxerUtils private constructor() {
     }
 
 
-    class MuxerData(internal var trackIndex: Int, internal var byteBuf: ByteBuffer, internal var bufferInfo: MediaCodec.BufferInfo)
+    class MuxerData(
+        internal var trackIndex: Int,
+        internal var byteBuf: ByteBuffer,
+        internal var bufferInfo: MediaCodec.BufferInfo
+    )
 
     companion object {
         private val TAG = "MediaMuxerUtils"

@@ -22,7 +22,8 @@ import kr.co.namee.permissiongen.PermissionSuccess
 import java.io.IOException
 import java.lang.ref.WeakReference
 
-class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult, CameraUtils.OnCameraFocusResult {
+class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
+    CameraUtils.OnCameraFocusResult {
 
 
     private lateinit var cameraUtils: CameraUtils
@@ -41,19 +42,19 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     }
 
-    private fun initView(){
+    private fun initView() {
         shoot_refresh_view.setOnClickListener {
-            if(shoot_refresh_view.isStarted()){
+            if (shoot_refresh_view.isStarted()) {
                 shoot_refresh_view.reset()
                 finishShootAndMakeFile()
-            }else {
+            } else {
                 shoot_refresh_view.start()
                 beginShoot()
             }
         }
     }
 
-    private fun initJcodec(){
+    private fun initJcodec() {
         val file = FileUtils.getFile(this)
         try {
             SequenceEncoderMp4.instance = SequenceEncoderMp4(file, this)
@@ -61,22 +62,26 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             e.printStackTrace()
         }
     }
-    private fun beginShoot(){
+
+    private fun beginShoot() {
+        MediaMuxerUtils.muxerRunnableInstance.startMuxerThread(cameraUtils.cameraDirection, false)
         delayHandler.sendEmptyMessage(HANDLER_SHOOT_WHAT)
     }
 
-    fun continueShoot(){
-        delayHandler.sendEmptyMessageDelayed(HANDLER_SHOOT_WHAT,HANDLER_SHOOT_DELAY)
+    fun continueShoot() {
+        delayHandler.sendEmptyMessageDelayed(HANDLER_SHOOT_WHAT, HANDLER_SHOOT_DELAY)
     }
 
-    private fun finishShootAndMakeFile(){
+    private fun finishShootAndMakeFile() {
         delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
         SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
         SequenceEncoderMp4.instance?.finish()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
     }
 
@@ -90,7 +95,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     @PermissionFail(requestCode = REQUEST_CAMERA_PERMISSION_CODE)
     fun onPermissionGrantedFail() {
-         AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setTitle(R.string.notice)
             .setMessage(R.string.permission_message)
             .setCancelable(false)
@@ -140,7 +145,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         private val mActivity: WeakReference<MainActivity> = WeakReference(activity)
 
         override fun handleMessage(msg: Message) {
-            if(msg.what == HANDLER_SHOOT_WHAT) {
+            if (msg.what == HANDLER_SHOOT_WHAT) {
                 val activity = mActivity.get()
                 if (activity != null) {
                     activity.shouldCatchPreview = true
