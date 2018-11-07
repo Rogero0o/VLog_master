@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.view.SurfaceHolder
@@ -24,6 +25,10 @@ import kr.co.namee.permissiongen.PermissionGen
 import kr.co.namee.permissiongen.PermissionSuccess
 import java.io.IOException
 import java.lang.ref.WeakReference
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
     CameraUtils.OnCameraFocusResult {
@@ -101,19 +106,33 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     @PermissionFail(requestCode = REQUEST_CAMERA_PERMISSION_CODE)
     fun onPermissionGrantedFail() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.notice)
-            .setMessage(R.string.permission_message)
-            .setCancelable(false)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                PermissionGen.with(this@MainActivity)
-                    .addRequestCode(REQUEST_CAMERA_PERMISSION_CODE)
-                    .permissions(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .request()
-            }.show()
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) ||
+            !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            AlertDialog.Builder(this)
+                .setTitle(R.string.notice)
+                .setMessage(R.string.permission_message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", applicationContext.packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                }.show()
+        }else {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.notice)
+                .setMessage(R.string.permission_message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    PermissionGen.with(this@MainActivity)
+                        .addRequestCode(REQUEST_CAMERA_PERMISSION_CODE)
+                        .permissions(
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                        .request()
+                }.show()
+        }
     }
 
     override fun onFocusResult(result: Boolean) {
