@@ -3,4 +3,6 @@
     <string name="notice">Notice</string>
     <string name="ok">OK</string>
     <string name="permission_message">Please enable the Permission for continue.</string>
+    <string name="screen_1080P">1080P</string>
+    <string name="screen_720P">720P&#160;</string>
 </resources>

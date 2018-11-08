@@ -28,6 +28,9 @@ import java.lang.ref.WeakReference
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.view.Gravity
+import com.roger.shootrefreshview.DensityUtil.dp2px
+import com.roger.vlog_master.menu.ScreenPopupWindow
 
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
+        initMenu()
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
     }
 
@@ -107,7 +111,8 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     @PermissionFail(requestCode = REQUEST_CAMERA_PERMISSION_CODE)
     fun onPermissionGrantedFail() {
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) ||
-            !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        ) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.notice)
                 .setMessage(R.string.permission_message)
@@ -118,7 +123,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
                     intent.data = uri
                     startActivity(intent)
                 }.show()
-        }else {
+        } else {
             AlertDialog.Builder(this)
                 .setTitle(R.string.notice)
                 .setMessage(R.string.permission_message)
@@ -148,7 +153,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         cameraUtils.surfaceHolder = holder
-        delayHandler.sendEmptyMessageDelayed(HANDLER_PREVIEW_WHAT,2450)
+        delayHandler.sendEmptyMessageDelayed(HANDLER_PREVIEW_WHAT, 2450)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -170,7 +175,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun hideLoading(){
+    fun hideLoading() {
         loadingContainer.visibility = View.GONE
     }
 
@@ -198,6 +203,16 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
                     activity.hideLoading()
                 }
             }
+        }
+    }
+
+    fun initMenu() {
+        val height = resources.displayMetrics.widthPixels
+        val with = dp2px(this, 200.toFloat()).toInt()
+        var screenPopupMenu =
+            ScreenPopupWindow(this, R.layout.popupwindow_screen, with, height)
+        btn_screen.setOnClickListener {
+            screenPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
     }
 
