@@ -23,7 +23,42 @@
             app:gradientStartColor="@color/colorRed"
             app:gradientEndColor="@color/colorRed"
             app:strokeWidth="5dp"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#66000000"
+            android:gravity="center">
+
+        <ImageButton
+                android:id="@+id/btn_time"
+                android:background="@android:color/transparent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_time"/>
+
+        <ImageButton
+                android:layout_marginTop="40dp"
+                android:id="@+id/btn_screen"
+                android:background="@android:color/transparent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_screen"/>
+
+        <ImageButton
+                android:layout_marginTop="40dp"
+                android:id="@+id/btn_settings"
+                android:background="@android:color/transparent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_settings"/>
+    </LinearLayout>
+
     <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/loadingContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
