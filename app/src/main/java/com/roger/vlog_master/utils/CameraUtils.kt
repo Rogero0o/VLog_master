@@ -162,7 +162,7 @@ class CameraUtils private constructor() {
     }
 
     fun destroyCamera() {
-        cameraInstance!!.release()
+        cameraInstance?.release()
         Log.i(TAG, "CameraManager-->release camera")
     }
 
