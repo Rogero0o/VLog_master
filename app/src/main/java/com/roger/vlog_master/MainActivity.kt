@@ -12,8 +12,6 @@ import android.os.Message
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.view.SurfaceHolder
-import android.view.View
 import com.roger.match.library.util.Utils
 import com.roger.vlog_master.jcodec.ListCache
 import com.roger.vlog_master.jcodec.MediaMuxerUtils
@@ -28,9 +26,10 @@ import java.lang.ref.WeakReference
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.view.Gravity
+import android.view.*
 import com.roger.shootrefreshview.DensityUtil.dp2px
 import com.roger.vlog_master.menu.ScreenPopupWindow
+import com.roger.vlog_master.menu.TimeIntervalPopupWindow
 
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
@@ -211,8 +210,14 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         val with = dp2px(this, 200.toFloat()).toInt()
         var screenPopupMenu =
             ScreenPopupWindow(this, R.layout.popupwindow_screen, with, height)
+        var timeIntervalPopupMenu =
+            TimeIntervalPopupWindow(this, R.layout.popupwindow_timeinterval, with, height)
+
         btn_screen.setOnClickListener {
             screenPopupMenu.showAsDropDown(menu, menu.width, 0)
+        }
+        btn_time.setOnClickListener {
+            timeIntervalPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
     }
 

@@ -5,4 +5,21 @@
     <string name="permission_message">Please enable the Permission for continue.</string>
     <string name="screen_1080P">1080P</string>
     <string name="screen_720P">720P&#160;</string>
+    <string name="time_interval">Time interval</string>
+    <string name="second_0.5">0.5 seconds</string>
+    <string name="second_1">1 second</string>
+    <string name="second_2">2 seconds</string>
+    <string name="second_3">3 seconds</string>
+    <string name="second_4">4 seconds</string>
+    <string name="second_5">5 seconds</string>
+    <string name="second_6">6 seconds</string>
+    <string name="second_7">7 seconds</string>
+    <string name="second_8">8 seconds</string>
+    <string name="second_9">9 seconds</string>
+    <string name="second_10">10 seconds</string>
+    <string name="second_20">20 seconds</string>
+    <string name="second_30">30 seconds</string>
+    <string name="second_60">60 seconds</string>
+    <string name="second_120">120 seconds</string>
+    <string name="second_180">180 seconds</string>
 </resources>
