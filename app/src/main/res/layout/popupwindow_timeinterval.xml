@@ -6,7 +6,7 @@
         android:layout_height="wrap_content">
 
     <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:focusable="true"
             android:clickable="true"
@@ -29,6 +29,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:id="@+id/second_0.5"
             android:focusable="true"
@@ -53,7 +54,7 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:id="@+id/second_1"
             android:focusable="true"
@@ -79,7 +80,7 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:id="@+id/second_3"
             android:focusable="true"
