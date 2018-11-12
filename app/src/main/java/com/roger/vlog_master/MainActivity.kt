@@ -30,6 +30,7 @@ import android.view.*
 import com.roger.shootrefreshview.DensityUtil.dp2px
 import com.roger.vlog_master.menu.ScreenPopupWindow
 import com.roger.vlog_master.menu.TimeIntervalPopupWindow
+import com.roger.vlog_master.menu.TimeLongPopupWindow
 
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
@@ -205,19 +206,25 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
     }
 
-    fun initMenu() {
+    private fun initMenu() {
         val height = resources.displayMetrics.widthPixels
         val with = dp2px(this, 200.toFloat()).toInt()
-        var screenPopupMenu =
+        val screenPopupMenu =
             ScreenPopupWindow(this, R.layout.popupwindow_screen, with, height)
-        var timeIntervalPopupMenu =
+        val timeIntervalPopupMenu =
             TimeIntervalPopupWindow(this, R.layout.popupwindow_timeinterval, with, height)
+
+        val timeLongPopupMenu =
+            TimeLongPopupWindow(this, R.layout.popupwindow_timelong, with, height)
 
         btn_screen.setOnClickListener {
             screenPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
         btn_time.setOnClickListener {
             timeIntervalPopupMenu.showAsDropDown(menu, menu.width, 0)
+        }
+        btn_long.setOnClickListener {
+            timeLongPopupMenu.showAsDropDown(menu,menu.width,0)
         }
     }
 

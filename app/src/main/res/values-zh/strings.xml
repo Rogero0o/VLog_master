@@ -5,7 +5,7 @@
     <string name="permission_message">延时摄影专家需要摄像及写入的权限.</string>
     <string name="screen_1080P">1080P</string>
     <string name="screen_720P">720P&#160;</string>
-    <string name="time_interval">Time interval</string>
+    <string name="time_interval">间隔时间</string>
     <string name="second_0.5">0.5 秒</string>
     <string name="second_1">1 秒</string>
     <string name="second_2">2 秒</string>
@@ -22,4 +22,13 @@
     <string name="second_60">60 秒</string>
     <string name="second_120">120 秒</string>
     <string name="second_180">180 秒</string>
+    <string name="time_long">拍摄时长</string>
+    <string name="minute_10">10 分钟</string>
+    <string name="minute_20">20 分钟</string>
+    <string name="minute_30">30 分钟</string>
+    <string name="hour_1">1 小时</string>
+    <string name="hour_2">2 小时</string>
+    <string name="hour_3">3 小时</string>
+    <string name="hour_6">6 小时</string>
+    <string name="infinite">无限时长</string>
 </resources>
