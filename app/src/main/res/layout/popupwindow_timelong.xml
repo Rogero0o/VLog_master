@@ -7,7 +7,7 @@
         android:padding="10dp">
 
     <LinearLayout
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:focusable="true"
             android:clickable="true"
@@ -24,7 +24,7 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:id="@+id/minute_10"
             android:focusable="true"

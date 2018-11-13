@@ -33,27 +33,32 @@
             android:gravity="center">
 
         <ImageButton
-
+                android:padding="@dimen/menu_padding"
+                android:scaleType="centerCrop"
                 android:id="@+id/btn_screen"
                 android:background="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/menu_size"
+                android:layout_height="@dimen/menu_size"
                 android:src="@drawable/ic_screen"/>
 
         <ImageButton
+                android:padding="@dimen/menu_padding"
+                android:scaleType="centerCrop"
                 android:layout_marginTop="40dp"
                 android:id="@+id/btn_time"
                 android:background="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/menu_size"
+                android:layout_height="@dimen/menu_size"
                 android:src="@drawable/ic_time"/>
 
         <ImageButton
+                android:padding="@dimen/menu_padding"
+                android:scaleType="centerCrop"
                 android:layout_marginTop="40dp"
                 android:id="@+id/btn_long"
                 android:background="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/menu_size"
+                android:layout_height="@dimen/menu_size"
                 android:src="@drawable/ic_long"/>
 
 
@@ -61,9 +66,9 @@
                 android:layout_marginTop="40dp"
                 android:id="@+id/btn_settings"
                 android:background="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="5dp"
+                android:layout_width="@dimen/menu_size"
+                android:layout_height="@dimen/menu_size"
+                android:padding="@dimen/menu_padding"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_settings"/>
     </LinearLayout>

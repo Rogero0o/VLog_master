@@ -3,6 +3,7 @@
     <string name="notice">请注意</string>
     <string name="ok">OK</string>
     <string name="permission_message">延时摄影专家需要摄像及写入的权限.</string>
+    <string name="resolution_setting">分辨率</string>
     <string name="screen_1080P">1080P</string>
     <string name="screen_720P">720P&#160;</string>
     <string name="time_interval">间隔时间</string>
