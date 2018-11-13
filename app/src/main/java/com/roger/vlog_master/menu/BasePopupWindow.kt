@@ -9,12 +9,11 @@ import com.roger.vlog_master.R
 
 
 abstract class BasePopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) {
-    protected lateinit var context: Context
+    protected var context: Context = c
     protected var contentView: View? = null
-    protected lateinit var mInstance: PopupWindow
+    private var mInstance: PopupWindow
 
     init {
-        context = c
         contentView = LayoutInflater.from(c).inflate(layoutRes, null, false)
         initView()
         initEvent()
@@ -22,14 +21,10 @@ abstract class BasePopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) {
         initWindow()
     }
 
-    fun getPopupWindow(): PopupWindow {
-        return mInstance
-    }
-
     protected abstract fun initView()
     protected abstract fun initEvent()
 
-    protected fun initWindow() {
+    private fun initWindow() {
         mInstance.setBackgroundDrawable(ColorDrawable(context.resources.getColor(R.color.color_66000000)))
         mInstance.isOutsideTouchable = true
         mInstance.isTouchable = true
@@ -37,9 +32,5 @@ abstract class BasePopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) {
 
     fun showAsDropDown(anchor: View, xoff: Int, yoff: Int) {
         mInstance.showAsDropDown(anchor, xoff + 5, yoff)
-    }
-
-    fun showAtLocation(parent: View, gravity: Int, x: Int, y: Int) {
-        mInstance.showAtLocation(parent, gravity, x, y)
     }
 }

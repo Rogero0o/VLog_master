@@ -27,6 +27,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.view.*
+import com.orhanobut.hawk.Hawk
 import com.roger.shootrefreshview.DensityUtil.dp2px
 import com.roger.vlog_master.menu.AboutPopupWindow
 import com.roger.vlog_master.menu.ScreenPopupWindow
@@ -45,9 +46,14 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initThirdPackage()
         initView()
         initMenu()
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
+    }
+
+    private fun initThirdPackage(){
+        Hawk.init(this).build()
     }
 
     private fun initView() {

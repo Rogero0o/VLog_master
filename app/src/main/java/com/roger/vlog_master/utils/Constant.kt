@@ -11,3 +11,7 @@ const val HANDLER_PREVIEW_WHAT = 2
 const val HANDLER_SHOOT_DELAY = 1000L
 var FILE_FOLDER = Environment.getExternalStorageDirectory()
     .absolutePath + File.separator + "VLog"
+
+const val KEY_SCREEN = "VLog_MASTER_KEY_SCREEN"
+const val VALUE_SCREEN_1080 = 1080
+const val VALUE_SCREEN_720 = 720
