@@ -28,6 +28,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.view.*
 import com.roger.shootrefreshview.DensityUtil.dp2px
+import com.roger.vlog_master.menu.AboutPopupWindow
 import com.roger.vlog_master.menu.ScreenPopupWindow
 import com.roger.vlog_master.menu.TimeIntervalPopupWindow
 import com.roger.vlog_master.menu.TimeLongPopupWindow
@@ -213,9 +214,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             ScreenPopupWindow(this, R.layout.popupwindow_screen, with, height)
         val timeIntervalPopupMenu =
             TimeIntervalPopupWindow(this, R.layout.popupwindow_timeinterval, with, height)
-
         val timeLongPopupMenu =
             TimeLongPopupWindow(this, R.layout.popupwindow_timelong, with, height)
+        val aboutPopupMenu =
+            AboutPopupWindow(this, R.layout.popupwindow_about, with, height)
 
         btn_screen.setOnClickListener {
             screenPopupMenu.showAsDropDown(menu, menu.width, 0)
@@ -225,6 +227,9 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
         btn_long.setOnClickListener {
             timeLongPopupMenu.showAsDropDown(menu,menu.width,0)
+        }
+        btn_settings.setOnClickListener {
+            aboutPopupMenu.showAsDropDown(menu,menu.width,0)
         }
     }
 
