@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun initMenu() {
-        val height = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
         val with = dp2px(this, 200.toFloat()).toInt()
         val screenPopupMenu =
             ScreenPopupWindow(this, R.layout.popupwindow_screen, with, height)
