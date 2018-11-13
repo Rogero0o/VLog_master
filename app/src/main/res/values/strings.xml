@@ -32,4 +32,8 @@
     <string name="hour_3">3 hours</string>
     <string name="hour_6">6 hours</string>
     <string name="infinite">Infinite</string>
+    <string name="give_me_a_thumb">Give me a thumb</string>
+    <string name="feedback">Feedback</string>
+    <string name="share">Share to Friend</string>
+    <string name="about">About</string>
 </resources>

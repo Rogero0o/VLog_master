@@ -32,4 +32,8 @@
     <string name="hour_3">3 小时</string>
     <string name="hour_6">6 小时</string>
     <string name="infinite">无限时长</string>
+    <string name="give_me_a_thumb">给我鼓励</string>
+    <string name="feedback">问题反馈</string>
+    <string name="share">分享好友</string>
+    <string name="about">关于</string>
 </resources>
