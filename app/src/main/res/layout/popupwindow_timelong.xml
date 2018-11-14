@@ -24,7 +24,33 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:id="@+id/infinite"
+            android:focusable="true"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+        <TextView
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/infinite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <ImageView
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_check"
+                android:id="@+id/infinite_checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_10"
             android:focusable="true"
@@ -41,6 +67,7 @@
                 android:layout_height="wrap_content"/>
 
         <ImageView
+                android:visibility="invisible"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_check"
                 android:id="@+id/minute_10_checked"
@@ -49,6 +76,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_20"
             android:focusable="true"
@@ -74,6 +102,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_30"
             android:focusable="true"
@@ -99,6 +128,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_1"
             android:focusable="true"
@@ -125,6 +155,7 @@
 
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_2"
             android:focusable="true"
@@ -150,6 +181,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_3"
             android:focusable="true"
@@ -175,6 +207,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_6"
             android:focusable="true"
@@ -195,31 +228,6 @@
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_check"
                 android:id="@+id/hour_6_checked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:gravity="center"
-            android:id="@+id/infinite"
-            android:focusable="true"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp">
-        <TextView
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:text="@string/infinite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <ImageView
-                android:visibility="invisible"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_check"
-                android:id="@+id/infinite_checked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
