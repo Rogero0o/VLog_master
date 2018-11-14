@@ -24,6 +24,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_0.5"
             android:gravity="center"
             android:id="@+id/second_0.5"
             android:focusable="true"
@@ -48,6 +49,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_1"
             android:gravity="center"
             android:id="@+id/second_1"
             android:focusable="true"
@@ -73,6 +75,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_3"
             android:gravity="center"
             android:id="@+id/second_3"
             android:focusable="true"
@@ -98,6 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_5"
             android:gravity="center"
             android:id="@+id/second_5"
             android:focusable="true"
@@ -124,6 +128,7 @@
 
 
     <LinearLayout
+            android:contentDescription="@string/second_10"
             android:gravity="center"
             android:id="@+id/second_10"
             android:focusable="true"
@@ -149,6 +154,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_20"
             android:gravity="center"
             android:id="@+id/second_20"
             android:focusable="true"
@@ -174,6 +180,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_60"
             android:gravity="center"
             android:id="@+id/second_60"
             android:focusable="true"
@@ -199,6 +206,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_120"
             android:gravity="center"
             android:id="@+id/second_120"
             android:focusable="true"
@@ -224,6 +232,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:contentDescription="@string/second_180"
             android:gravity="center"
             android:id="@+id/second_180"
             android:focusable="true"

@@ -15,3 +15,5 @@ var FILE_FOLDER = Environment.getExternalStorageDirectory()
 const val KEY_SCREEN = "VLog_MASTER_KEY_SCREEN"
 const val VALUE_SCREEN_1080 = 1080
 const val VALUE_SCREEN_720 = 720
+
+const val KEY_TIME_INTERVAL = "VLog_MASTER_TIME_INTERVAL"

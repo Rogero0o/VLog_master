@@ -1,7 +1,6 @@
 package com.roger.vlog_master.menu
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import com.orhanobut.hawk.Hawk
 import com.roger.vlog_master.R
@@ -19,12 +18,14 @@ class ScreenPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopupW
             contentView?.findViewById<View>(R.id.screen_1080_checked)?.visibility = View.VISIBLE
             contentView?.findViewById<View>(R.id.screen_720_checked)?.visibility = View.INVISIBLE
             Hawk.put(KEY_SCREEN,VALUE_SCREEN_1080)
+            instance.dismiss()
         }
 
         contentView?.findViewById<View>(R.id.screen_720)?.setOnClickListener {
             contentView?.findViewById<View>(R.id.screen_1080_checked)?.visibility = View.INVISIBLE
             contentView?.findViewById<View>(R.id.screen_720_checked)?.visibility = View.VISIBLE
             Hawk.put(KEY_SCREEN, VALUE_SCREEN_720)
+            instance.dismiss()
         }
     }
 }
