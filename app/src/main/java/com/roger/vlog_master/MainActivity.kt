@@ -25,7 +25,9 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import android.content.Intent
 import android.net.Uri
+import android.os.CountDownTimer
 import android.provider.Settings
+import android.util.Log
 import android.view.*
 import com.orhanobut.hawk.Hawk
 import com.roger.shootrefreshview.DensityUtil.dp2px
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     private lateinit var cameraUtils: CameraUtils
     private val delayHandler = DelayHandler(this)
     private var shouldCatchPreview: Boolean = false
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
     }
 
-    private fun initThirdPackage(){
+    private fun initThirdPackage() {
         Hawk.init(this).build()
     }
 
@@ -63,10 +66,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
         shoot_refresh_view.setOnClickListener {
             if (shoot_refresh_view.isStarted()) {
-                shoot_refresh_view.reset()
+
                 finishShootAndMakeFile()
             } else {
-                shoot_refresh_view.start()
+
                 beginShoot()
             }
         }
@@ -86,8 +89,22 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun beginShoot() {
+        shoot_refresh_view.start()
         MediaMuxerUtils.muxerRunnableInstance.startMuxerThread(cameraUtils.cameraDirection, false)
+        HANDLER_SHOOT_DELAY = Hawk.get(KEY_TIME_INTERVAL, HANDLER_SHOOT_DELAY)
         delayHandler.sendEmptyMessage(HANDLER_SHOOT_WHAT)
+        val timeLong = Hawk.get<Float>(KEY_TIME_LONG, -1f)
+        if (timeLong != -1f) {
+            countDownTimer = object : CountDownTimer(timeLong.toLong(), 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    Log.i(LOG_TAG, "millisUntilFinished:$millisUntilFinished")
+                }
+
+                override fun onFinish() {
+                    finishShootAndMakeFile()
+                }
+            }.start()
+        }
     }
 
     fun continueShoot() {
@@ -95,6 +112,8 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun finishShootAndMakeFile() {
+        countDownTimer?.cancel()
+        shoot_refresh_view.reset()
         delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
         SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
         SequenceEncoderMp4.instance?.finish()
@@ -232,10 +251,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             timeIntervalPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
         btn_long.setOnClickListener {
-            timeLongPopupMenu.showAsDropDown(menu,menu.width,0)
+            timeLongPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
         btn_settings.setOnClickListener {
-            aboutPopupMenu.showAsDropDown(menu,menu.width,0)
+            aboutPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
     }
 

@@ -32,7 +32,8 @@ class TimeLongPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopu
             view.setOnClickListener {
                 setImageViewCheck(view.getChildAt(1).id)
                 val value = (view.getChildAt(0) as TextView).text
-                Hawk.put(KEY_TIME_LONG, getValueFromText(value.toString()))
+                Hawk.put(KEY_TIME_LONG, getValueFromText(value.toString()) * 1000 * 60)
+                instance.dismiss()
                 Log.i(LOG_TAG, (Hawk.get(KEY_TIME_LONG) as Float).toString())
             }
         }
