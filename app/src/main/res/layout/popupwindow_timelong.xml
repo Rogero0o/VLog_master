@@ -24,6 +24,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:layout_marginTop="5dp"
             android:gravity="center"
@@ -50,6 +51,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_10"
@@ -68,7 +70,7 @@
 
         <ImageView
                 android:visibility="invisible"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_check"
                 android:id="@+id/minute_10_checked"
                 android:layout_width="wrap_content"
@@ -76,6 +78,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_20"
@@ -102,6 +105,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/minute_30"
@@ -128,6 +132,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_1"
@@ -155,6 +160,7 @@
 
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_2"
@@ -173,7 +179,7 @@
 
         <ImageView
                 android:visibility="invisible"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_check"
                 android:id="@+id/hour_2_checked"
                 android:layout_width="wrap_content"
@@ -181,6 +187,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_3"
@@ -207,6 +214,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:contentDescription="@string/time_long"
             android:gravity="center"
             android:id="@+id/hour_6"

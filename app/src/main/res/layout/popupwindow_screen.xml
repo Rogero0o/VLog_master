@@ -21,6 +21,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:id="@+id/screen_1080"
@@ -45,6 +46,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:id="@+id/screen_720"
