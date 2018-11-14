@@ -6,7 +6,6 @@ import android.view.View
 import com.orhanobut.hawk.Hawk
 import com.roger.vlog_master.R
 import com.roger.vlog_master.utils.KEY_SCREEN
-import com.roger.vlog_master.utils.LOG_TAG
 import com.roger.vlog_master.utils.VALUE_SCREEN_1080
 import com.roger.vlog_master.utils.VALUE_SCREEN_720
 
