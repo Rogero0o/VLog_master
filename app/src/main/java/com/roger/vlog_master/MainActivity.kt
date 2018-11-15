@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         initThirdPackage()
         initView()
         initMenu()
+        updateVideoInfo(0L)
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
     }
 
@@ -97,11 +98,16 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         if (timeLong != -1f) {
             countDownTimer = object : CountDownTimer(timeLong.toLong(), 1000) {
                 override fun onTick(millisUntilFinished: Long) {
+                    runOnUiThread {
+                        updateVideoInfo(millisUntilFinished)
+                    }
                     Log.i(LOG_TAG, "millisUntilFinished:$millisUntilFinished")
                 }
 
                 override fun onFinish() {
-                    finishShootAndMakeFile()
+                    runOnUiThread {
+                        finishShootAndMakeFile()
+                    }
                 }
             }.start()
         }
@@ -257,5 +263,21 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             aboutPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
     }
+
+    fun updateVideoInfo(millisUntilFinished: Long) {
+        val intervalTime = Hawk.get<Float>(KEY_TIME_INTERVAL, 500f) / 1000f
+        main_text_time_interval.text = getString(R.string.main_time_interval, intervalTime.toString())
+        val recordingTime = (Hawk.get<Float>(KEY_TIME_LONG, -1f) - millisUntilFinished) / 1000f
+        if (recordingTime > 0) {
+            main_text_time_long.text =
+                    getString(R.string.main_recording_duration, TimeUtils.secToTime(recordingTime.toLong()))
+            val videoTime = recordingTime / (intervalTime * 6)
+            main_text_video_long.text = getString(R.string.main_video_duration, TimeUtils.secToTime(videoTime.toLong()))
+        } else {
+            main_text_time_long.text = getString(R.string.main_recording_duration, getString(R.string.infinite))
+            main_text_video_long.text = getString(R.string.main_video_duration, getString(R.string.infinite))
+        }
+    }
+
 
 }

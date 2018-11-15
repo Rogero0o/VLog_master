@@ -37,4 +37,7 @@
     <string name="share">分享好友</string>
     <string name="about">关于</string>
     <string name="second">秒</string>
+    <string name="main_time_interval">拍摄间隔: %s 秒</string>
+    <string name="main_recording_duration">拍摄时长: %s</string>
+    <string name="main_video_duration">视频时长: %s</string>
 </resources>

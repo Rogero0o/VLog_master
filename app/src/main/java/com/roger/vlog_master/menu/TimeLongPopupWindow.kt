@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.orhanobut.hawk.Hawk
+import com.roger.vlog_master.MainActivity
 import com.roger.vlog_master.R
 import com.roger.vlog_master.utils.KEY_TIME_LONG
 import com.roger.vlog_master.utils.LOG_TAG
@@ -33,6 +34,7 @@ class TimeLongPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopu
                 setImageViewCheck(view.getChildAt(1).id)
                 val value = (view.getChildAt(0) as TextView).text
                 Hawk.put(KEY_TIME_LONG, getValueFromText(value.toString()) * 1000 * 60)
+                (context as MainActivity).updateVideoInfo(0L)
                 instance.dismiss()
                 Log.i(LOG_TAG, (Hawk.get(KEY_TIME_LONG) as Float).toString())
             }

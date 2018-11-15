@@ -7,6 +7,7 @@ import android.view.View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION
 import android.view.ViewGroup
 import android.widget.TextView
 import com.orhanobut.hawk.Hawk
+import com.roger.vlog_master.MainActivity
 import com.roger.vlog_master.R
 import com.roger.vlog_master.utils.KEY_TIME_INTERVAL
 import com.roger.vlog_master.utils.LOG_TAG
@@ -35,6 +36,7 @@ class TimeIntervalPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : Base
                 setImageViewCheck(view.getChildAt(1).id)
                 val value = (view.getChildAt(0) as TextView).text
                 Hawk.put(KEY_TIME_INTERVAL, getValueFromText(value.toString()) * 1000)
+                (context as MainActivity).updateVideoInfo(0L)
                 instance.dismiss()
                 Log.i(LOG_TAG, (Hawk.get(KEY_TIME_INTERVAL) as Float).toString())
             }
