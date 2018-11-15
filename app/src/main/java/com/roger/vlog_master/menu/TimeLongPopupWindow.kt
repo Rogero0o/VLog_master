@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.orhanobut.hawk.Hawk
 import com.roger.vlog_master.MainActivity
 import com.roger.vlog_master.R
+import com.roger.vlog_master.utils.KEY_TIME_INTERVAL
 import com.roger.vlog_master.utils.KEY_TIME_LONG
 import com.roger.vlog_master.utils.LOG_TAG
 import java.util.regex.Pattern
@@ -28,12 +29,23 @@ class TimeLongPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopu
             context.resources.getString(R.string.time_long),
             View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION
         )
+
+        val timeLong = Hawk.get(KEY_TIME_LONG, -1f) / 60000f
+
         for (view in views) {
-            imageViewList.add((view as ViewGroup).getChildAt(1))
+
+            val imageView = (view as ViewGroup).getChildAt(1)
+            val value = (view.getChildAt(0) as TextView).text.toString()
+            if (getValueFromText(value) == timeLong
+                || (timeLong < 0 && value == context.getString(R.string.infinite))) {
+                imageView.visibility = View.VISIBLE
+            } else {
+                imageView.visibility = View.INVISIBLE
+            }
+            imageViewList.add(imageView)
             view.setOnClickListener {
                 setImageViewCheck(view.getChildAt(1).id)
-                val value = (view.getChildAt(0) as TextView).text
-                Hawk.put(KEY_TIME_LONG, getValueFromText(value.toString()) * 1000 * 60)
+                Hawk.put(KEY_TIME_LONG, getValueFromText(value) * 1000 * 60)
                 (context as MainActivity).updateVideoInfo(0L)
                 instance.dismiss()
                 Log.i(LOG_TAG, (Hawk.get(KEY_TIME_LONG) as Float).toString())
@@ -53,6 +65,9 @@ class TimeLongPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopu
         }
     }
 
+    /**
+     * return minutes
+     */
     private fun getValueFromText(str: String): Float {
         val p = Pattern.compile("\\d+")
         val m = p.matcher(str)

@@ -30,11 +30,18 @@ class TimeIntervalPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : Base
             context.resources.getString(R.string.second),
             FIND_VIEWS_WITH_CONTENT_DESCRIPTION
         )
+        val interval = Hawk.get(KEY_TIME_INTERVAL, -1f) / 1000f
         for (view in views) {
-            imageViewList.add((view as ViewGroup).getChildAt(1))
+            val imageView = (view as ViewGroup).getChildAt(1)
+            val value = (view.getChildAt(0) as TextView).text
+            if (value.contains(interval.toString())) {
+                imageView.visibility = View.VISIBLE
+            } else {
+                imageView.visibility = View.INVISIBLE
+            }
+            imageViewList.add(imageView)
             view.setOnClickListener {
                 setImageViewCheck(view.getChildAt(1).id)
-                val value = (view.getChildAt(0) as TextView).text
                 Hawk.put(KEY_TIME_INTERVAL, getValueFromText(value.toString()) * 1000)
                 (context as MainActivity).updateVideoInfo(0L)
                 instance.dismiss()
