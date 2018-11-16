@@ -279,5 +279,12 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
     }
 
+    fun rePreview(){
+        cameraUtils.stopPreivew()
+        cameraUtils.destroyCamera()
+        cameraUtils.createCamera()
+        cameraUtils.startPreview()
+    }
+
 
 }

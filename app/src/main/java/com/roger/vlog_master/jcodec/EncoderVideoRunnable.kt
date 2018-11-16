@@ -17,11 +17,10 @@ import java.lang.ref.WeakReference
 import java.nio.ByteBuffer
 import java.util.Vector
 
-class EncoderVideoRunnable(// MP4混合器
-        private val muxerRunnableRf: WeakReference<MediaMuxerUtils>) : Runnable {
-    // 正常垂直方向拍摄
+class EncoderVideoRunnable(
+    private val muxerRunnableRf: WeakReference<MediaMuxerUtils>
+) : Runnable {
     var isPhoneHorizontal = false
-    // 硬编码器
     private var mVideoEncodec: MediaCodec? = null
     private var mColorFormat: Int = 0
     private var isExit = false
@@ -76,6 +75,7 @@ class EncoderVideoRunnable(// MP4混合器
         } else {
             mFormat = MediaFormat.createVideoFormat(MIME_TYPE, CameraUtils.PREVIEW_WIDTH, CameraUtils.PREVIEW_HEIGHT)
         }
+        BIT_RATE = CameraUtils.PREVIEW_WIDTH * CameraUtils.PREVIEW_HEIGHT * 3 * 8 * FRAME_RATE / 256
         mFormat!!.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE)
         mFormat!!.setInteger(MediaFormat.KEY_FRAME_RATE, FRAME_RATE)
         mFormat!!.setInteger(MediaFormat.KEY_COLOR_FORMAT, mColorFormat) // 颜色格式
@@ -204,9 +204,12 @@ class EncoderVideoRunnable(// MP4混合器
                 }
 
                 val mMuxerUtils = muxerRunnableRf.get()
-                mMuxerUtils?.addMuxerData(MediaMuxerUtils.MuxerData(
+                mMuxerUtils?.addMuxerData(
+                    MediaMuxerUtils.MuxerData(
                         MediaMuxerUtils.TRACK_VIDEO, clone(outputBuffer),
-                        mBufferInfo))
+                        mBufferInfo
+                    )
+                )
 
                 mVideoEncodec!!.releaseOutputBuffer(outputBufferIndex, false)
             }
@@ -281,10 +284,12 @@ class EncoderVideoRunnable(// MP4混合器
         // 绑定编码器缓存区超时时间为10s
         private val TIMES_OUT = 10000
         // 码率
-        private val BIT_RATE = CameraUtils.PREVIEW_WIDTH * CameraUtils.PREVIEW_HEIGHT * 3 * 8 * FRAME_RATE / 256
+        private var BIT_RATE = CameraUtils.PREVIEW_WIDTH * CameraUtils.PREVIEW_HEIGHT * 3 * 8 * FRAME_RATE / 256
 
-        fun NV21toI420SemiPlanar(nv21bytes: ByteArray, i420bytes: ByteArray,
-                                 width: Int, height: Int) {
+        fun NV21toI420SemiPlanar(
+            nv21bytes: ByteArray, i420bytes: ByteArray,
+            width: Int, height: Int
+        ) {
             System.arraycopy(nv21bytes, 0, i420bytes, 0, width * height)
             var i = width * height
             while (i < nv21bytes.size) {

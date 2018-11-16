@@ -235,8 +235,8 @@ class CameraUtils private constructor() {
 
     companion object {
         private val TAG = "CameraManager"
-        var PREVIEW_WIDTH = 1920
-        var PREVIEW_HEIGHT = 1080
+        var PREVIEW_WIDTH = 1280
+        var PREVIEW_HEIGHT = 720
         var isUsingYv12 = false
         private var mContext: Context? = null
 
