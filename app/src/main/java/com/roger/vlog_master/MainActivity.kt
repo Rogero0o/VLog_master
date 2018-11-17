@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        hideSystemButton()
         initThirdPackage()
         initView()
         initMenu()
@@ -325,6 +326,12 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         cameraUtils.destroyCamera()
         cameraUtils.createCamera()
         cameraUtils.startPreview()
+    }
+
+    private fun hideSystemButton(){
+        val view = window.decorView
+        val uiOption = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_FULLSCREEN
+        view.systemUiVisibility = uiOption
     }
 
 
