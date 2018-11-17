@@ -124,7 +124,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
         SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
         SequenceEncoderMp4.instance?.finish()
-        val filePath = SequenceEncoderMp4.instance?.getFilePath()
         Toast.makeText(this,getString(R.string.video_save_success,SequenceEncoderMp4.instance?.getFilePath())
             ,Toast.LENGTH_LONG).show()
     }

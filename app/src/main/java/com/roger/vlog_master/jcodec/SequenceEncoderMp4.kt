@@ -159,7 +159,7 @@ constructor(out: File, private val context: Context) {
     }
 
     fun getFilePath(): String? {
-        return file?.path + File.separator + file?.name
+        return file?.path
     }
 
     @Throws(IOException::class)
