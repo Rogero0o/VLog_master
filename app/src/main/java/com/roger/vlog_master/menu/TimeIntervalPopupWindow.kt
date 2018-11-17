@@ -30,7 +30,7 @@ class TimeIntervalPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : Base
             context.resources.getString(R.string.second),
             FIND_VIEWS_WITH_CONTENT_DESCRIPTION
         )
-        val interval = Hawk.get(KEY_TIME_INTERVAL, -1f) / 1000f
+        val interval = Hawk.get(KEY_TIME_INTERVAL, 500f) / 1000f
         for (view in views) {
             val imageView = (view as ViewGroup).getChildAt(1)
             val value = (view.getChildAt(0) as TextView).text
