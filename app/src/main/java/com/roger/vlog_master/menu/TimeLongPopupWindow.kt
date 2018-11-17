@@ -8,7 +8,6 @@ import android.widget.TextView
 import com.orhanobut.hawk.Hawk
 import com.roger.vlog_master.MainActivity
 import com.roger.vlog_master.R
-import com.roger.vlog_master.utils.KEY_TIME_INTERVAL
 import com.roger.vlog_master.utils.KEY_TIME_LONG
 import com.roger.vlog_master.utils.LOG_TAG
 import java.util.regex.Pattern
@@ -46,7 +45,7 @@ class TimeLongPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopu
             view.setOnClickListener {
                 setImageViewCheck(view.getChildAt(1).id)
                 Hawk.put(KEY_TIME_LONG, getValueFromText(value) * 1000 * 60)
-                (context as MainActivity).updateVideoInfo(0L)
+                (context as MainActivity).updateVideoUIInfo(0L)
                 instance.dismiss()
                 Log.i(LOG_TAG, (Hawk.get(KEY_TIME_LONG) as Float).toString())
             }

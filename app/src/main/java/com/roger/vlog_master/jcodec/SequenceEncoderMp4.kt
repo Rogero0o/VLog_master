@@ -1,7 +1,6 @@
 package com.roger.vlog_master.jcodec
 
 import android.content.Context
-import android.util.Log
 import com.roger.vlog_master.utils.MIN_FILE_SIZE
 
 import org.jcodec.codecs.h264.H264Utils
@@ -41,13 +40,13 @@ constructor(out: File, private val context: Context) {
     private val outTrack: FramesMP4MuxerTrack2
     private var frameNo: Int = 0
     private val muxer: MyMuxerMp4
-
+    private var file: File? = null
     private var isFinished = false
 
     init {
         // Muxer that will store the encoded frames
         var size: Long = 0
-
+        file = out
         try {
             size = getFileSize(out)
         } catch (e: Exception) {
@@ -93,9 +92,33 @@ constructor(out: File, private val context: Context) {
             H264Utils.encodeMOVPacket(result)
             // Add packet to video track
             if (type == 5) {
-                outTrack.addFrame(MP4Packet(result, frameNo.toLong(), timeScale.toLong(), 1, frameNo.toLong(), true, null, frameNo.toLong(), 0))
+                outTrack.addFrame(
+                    MP4Packet(
+                        result,
+                        frameNo.toLong(),
+                        timeScale.toLong(),
+                        1,
+                        frameNo.toLong(),
+                        true,
+                        null,
+                        frameNo.toLong(),
+                        0
+                    )
+                )
             } else {
-                outTrack.addFrame(MP4Packet(result, frameNo.toLong(), timeScale.toLong(), 1, frameNo.toLong(), false, null, frameNo.toLong(), 0))
+                outTrack.addFrame(
+                    MP4Packet(
+                        result,
+                        frameNo.toLong(),
+                        timeScale.toLong(),
+                        1,
+                        frameNo.toLong(),
+                        false,
+                        null,
+                        frameNo.toLong(),
+                        0
+                    )
+                )
             }
             frameNo++
         }
@@ -105,12 +128,12 @@ constructor(out: File, private val context: Context) {
         val bb = clone(spsList[0])
         val b = ByteArray(bb.remaining())
         bb.get(b, 0, b.size)
-        ListCache.getInstance(context)!!.saveSPS(b)
+        ListCache.getInstance(context).saveSPS(b)
 
         val bbp = clone(ppsList[0])
         val bp = ByteArray(bbp.remaining())
         bbp.get(bp, 0, bp.size)
-        ListCache.getInstance(context)!!.savePPS(bp)
+        ListCache.getInstance(context).savePPS(bp)
     }
 
     fun setFrameNo(num: Int) {
@@ -135,6 +158,10 @@ constructor(out: File, private val context: Context) {
         outTrack.trackTotalDuration = (num + 1).toLong()
     }
 
+    fun getFilePath(): String? {
+        return file?.path + File.separator + file?.name
+    }
+
     @Throws(IOException::class)
     fun finish() {
         if (isFinished) {
@@ -143,10 +170,10 @@ constructor(out: File, private val context: Context) {
         isFinished = true
         // Push saved SPS/PPS to a special storage in MP4
         if (spsList.size == 0) {
-            val spsbuf = ByteBuffer.wrap(ListCache.getInstance(context)!!.pps)
+            val spsbuf = ByteBuffer.wrap(ListCache.getInstance(context).pps)
             spsbuf.get()
             spsList.add(spsbuf)
-            val ppsbuf = ByteBuffer.wrap(ListCache.getInstance(context)!!.pps)
+            val ppsbuf = ByteBuffer.wrap(ListCache.getInstance(context).pps)
             ppsbuf.get()
             ppsList.add(ppsbuf)
         }

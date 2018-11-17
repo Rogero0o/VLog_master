@@ -40,4 +40,5 @@
     <string name="main_time_interval">拍摄间隔: %s 秒</string>
     <string name="main_recording_duration">拍摄时长: %s</string>
     <string name="main_video_duration">视频时长: %s</string>
+    <string name="video_save_success">视频保存成功 %s</string>
 </resources>

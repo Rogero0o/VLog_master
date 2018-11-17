@@ -29,6 +29,7 @@ import android.os.CountDownTimer
 import android.provider.Settings
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import com.orhanobut.hawk.Hawk
 import com.roger.shootrefreshview.DensityUtil.dp2px
 import com.roger.vlog_master.menu.AboutPopupWindow
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         initThirdPackage()
         initView()
         initMenu()
-        updateVideoInfo(0L)
+        updateVideoUIInfo(0L)
         cameraUtils = CameraUtils.getCamManagerInstance(this@MainActivity)
     }
 
@@ -67,7 +68,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
         shoot_refresh_view.setOnClickListener {
             if (shoot_refresh_view.isStarted()) {
-
                 finishShootAndMakeFile()
             } else {
 
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             countDownTimer = object : CountDownTimer(timeLong.toLong(), 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     runOnUiThread {
-                        updateVideoInfo(millisUntilFinished)
+                        updateVideoUIInfo(millisUntilFinished)
                     }
                     Log.i(LOG_TAG, "millisUntilFinished:$millisUntilFinished")
                 }
@@ -118,11 +118,15 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun finishShootAndMakeFile() {
+        updateVideoUIInfo(0)
         countDownTimer?.cancel()
         shoot_refresh_view.reset()
         delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
         SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
         SequenceEncoderMp4.instance?.finish()
+        val filePath = SequenceEncoderMp4.instance?.getFilePath()
+        Toast.makeText(this,getString(R.string.video_save_success,SequenceEncoderMp4.instance?.getFilePath())
+            ,Toast.LENGTH_LONG).show()
     }
 
     override fun onRequestPermissionsResult(
@@ -264,7 +268,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
     }
 
-    fun updateVideoInfo(millisUntilFinished: Long) {
+    fun updateVideoUIInfo(millisUntilFinished: Long) {
         val intervalTime = Hawk.get<Float>(KEY_TIME_INTERVAL, 500f) / 1000f
         main_text_time_interval.text = getString(R.string.main_time_interval, intervalTime.toString())
         val recordingTime = (Hawk.get<Float>(KEY_TIME_LONG, -1f) - millisUntilFinished) / 1000f

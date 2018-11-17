@@ -40,4 +40,5 @@
     <string name="main_time_interval">Time interval:  %s Secs</string>
     <string name="main_recording_duration">Recording duration:  %s</string>
     <string name="main_video_duration">Video duration:  %s</string>
+    <string name="video_save_success">Video saved success at %s</string>
 </resources>
