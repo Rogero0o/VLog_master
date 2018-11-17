@@ -29,6 +29,8 @@ import android.os.CountDownTimer
 import android.provider.Settings
 import android.util.Log
 import android.view.*
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.Toast
 import com.orhanobut.hawk.Hawk
 import com.roger.shootrefreshview.DensityUtil.dp2px
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     private val delayHandler = DelayHandler(this)
     private var shouldCatchPreview: Boolean = false
     private var countDownTimer: CountDownTimer? = null
+
+    private var menuAppearAnimate:Animation?=null
+    private var menuDisAppearAnimate:Animation?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +75,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             if (shoot_refresh_view.isStarted()) {
                 finishShootAndMakeFile()
             } else {
-
                 beginShoot()
             }
         }
@@ -90,6 +94,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun beginShoot() {
+        hideMeun()
         shoot_refresh_view.start()
         MediaMuxerUtils.muxerRunnableInstance.startMuxerThread(cameraUtils.cameraDirection, false)
         HANDLER_SHOOT_DELAY = Hawk.get(KEY_TIME_INTERVAL, HANDLER_SHOOT_DELAY)
@@ -118,6 +123,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun finishShootAndMakeFile() {
+        showMeun()
         updateVideoUIInfo(0)
         countDownTimer?.cancel()
         shoot_refresh_view.reset()
@@ -265,6 +271,38 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         btn_settings.setOnClickListener {
             aboutPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
+
+        menuAppearAnimate = AlphaAnimation(0f,1f)
+        menuAppearAnimate?.duration = 300
+        menuAppearAnimate?.setAnimationListener(object :Animation.AnimationListener{
+            override fun onAnimationStart(animation: Animation?) {
+                menu.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+            override fun onAnimationEnd(animation: Animation?) {
+            }
+        })
+
+        menuDisAppearAnimate = AlphaAnimation(1f,0f)
+        menuDisAppearAnimate?.duration = 300
+        menuDisAppearAnimate?.setAnimationListener(object :Animation.AnimationListener{
+            override fun onAnimationStart(animation: Animation?) {
+            }
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+            override fun onAnimationEnd(animation: Animation?) {
+                menu.visibility = View.INVISIBLE
+            }
+        })
+    }
+
+    fun showMeun(){
+        menu.startAnimation(menuAppearAnimate)
+    }
+
+    fun hideMeun(){
+        menu.startAnimation(menuDisAppearAnimate)
     }
 
     fun updateVideoUIInfo(millisUntilFinished: Long) {
