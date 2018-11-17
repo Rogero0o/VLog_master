@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun beginShoot() {
-        hideMeun()
+        hideMenu()
         shoot_refresh_view.start()
         MediaMuxerUtils.muxerRunnableInstance.startMuxerThread(cameraUtils.cameraDirection, false)
         HANDLER_SHOOT_DELAY = Hawk.get(KEY_TIME_INTERVAL, HANDLER_SHOOT_DELAY)
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     }
 
     private fun finishShootAndMakeFile() {
-        showMeun()
+        showMenu()
         updateVideoUIInfo(0)
         countDownTimer?.cancel()
         shoot_refresh_view.reset()
@@ -297,11 +297,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         })
     }
 
-    fun showMeun(){
+    private fun showMenu(){
         menu.startAnimation(menuAppearAnimate)
     }
 
-    fun hideMeun(){
+    private fun hideMenu(){
         menu.startAnimation(menuDisAppearAnimate)
     }
 
