@@ -6,6 +6,7 @@
               android:orientation="vertical">
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:paddingLeft="30dp"
             android:id="@+id/give_me_a_thumb"
             android:gravity="center_vertical"
@@ -31,6 +32,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:paddingLeft="30dp"
             android:layout_marginTop="30dp"
             android:gravity="center_vertical"
@@ -57,6 +59,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:paddingLeft="30dp"
             android:layout_marginTop="30dp"
             android:gravity="center_vertical"
@@ -83,6 +86,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:background="@drawable/tv_bg_selector"
             android:layout_marginBottom="50dp"
             android:paddingLeft="30dp"
             android:layout_marginTop="30dp"
