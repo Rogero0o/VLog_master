@@ -41,4 +41,6 @@
     <string name="main_recording_duration">Recording duration:  %s</string>
     <string name="main_video_duration">Video duration:  %s</string>
     <string name="video_save_success">Video saved success at %s</string>
+    <string name="Share_VLog_Title">Share VLogerMaster to friend</string>
+    <string name="Share_VLog_Text">Hey, check this awesome app, you will like it, have fun! VLogMaster!</string>
 </resources>

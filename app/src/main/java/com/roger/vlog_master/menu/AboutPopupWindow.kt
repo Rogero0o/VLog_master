@@ -7,16 +7,34 @@ import android.view.View
 import com.roger.vlog_master.R
 
 
+
+
 class AboutPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopupWindow(c, layoutRes, w, h) {
 
     override fun initView() {
     }
 
     override fun initEvent() {
+
+        contentView?.findViewById<View>(R.id.share)?.setOnClickListener {
+            share()
+            instance.dismiss()
+        }
+
         contentView?.findViewById<View>(R.id.feedback)?.setOnClickListener {
             sendEmail()
             instance.dismiss()
         }
+    }
+
+    private fun share(){
+        var shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.Share_VLog_Title))
+        shareIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.Share_VLog_Text))
+        shareIntent = Intent.createChooser(shareIntent, "Share to friend")
+        context.startActivity(shareIntent)
     }
 
     private fun sendEmail() {

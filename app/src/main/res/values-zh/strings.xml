@@ -41,4 +41,6 @@
     <string name="main_recording_duration">拍摄时长: %s</string>
     <string name="main_video_duration">视频时长: %s</string>
     <string name="video_save_success">视频保存成功 %s</string>
+    <string name="Share_VLog_Title">分享延时摄影专家</string>
+    <string name="Share_VLog_Text">Hey, 快来看看这个超酷的应用 《延时摄影专家》！</string>
 </resources>
