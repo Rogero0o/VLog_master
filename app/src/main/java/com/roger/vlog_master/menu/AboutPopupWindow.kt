@@ -33,7 +33,7 @@ class AboutPopupWindow(c: Context, layoutRes: Int, w: Int, h: Int) : BasePopupWi
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.Share_VLog_Title))
         shareIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.Share_VLog_Text))
-        shareIntent = Intent.createChooser(shareIntent, "Share to friend")
+        shareIntent = Intent.createChooser(shareIntent, context.getString(R.string.Share_To_Friend_Chooser_Title))
         context.startActivity(shareIntent)
     }
 
