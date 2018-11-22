@@ -48,10 +48,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     private lateinit var cameraUtils: CameraUtils
     private val delayHandler = DelayHandler(this)
     private var shouldCatchPreview: Boolean = false
+    private var isPreviewReleased: Boolean = false
     private var countDownTimer: CountDownTimer? = null
 
-    private var menuAppearAnimate:Animation?=null
-    private var menuDisAppearAnimate:Animation?=null
+    private var menuAppearAnimate: Animation? = null
+    private var menuDisAppearAnimate: Animation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         matchTextView.setInTime(0.3f)
         matchTextView.loadingAniDuration = 300
         matchTextView.setMatchAnimateRoundListener {
-            if(loadingContainer.visibility == View.VISIBLE) {
+            if (loadingContainer.visibility == View.VISIBLE) {
                 delayHandler.sendEmptyMessage(HANDLER_PREVIEW_WHAT)
             }
         }
@@ -137,8 +138,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         delayHandler.removeMessages(HANDLER_SHOOT_WHAT)
         SequenceEncoderMp4.instance?.setFrameNo(ListCache.getInstance(this@MainActivity).lastIndex.toInt())
         SequenceEncoderMp4.instance?.finish()
-        Toast.makeText(this,getString(R.string.video_save_success,SequenceEncoderMp4.instance?.getFilePath())
-            ,Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this, getString(R.string.video_save_success, SequenceEncoderMp4.instance?.getFilePath())
+            , Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onRequestPermissionsResult(
@@ -201,6 +204,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         cameraUtils.surfaceHolder = holder
+        if (isPreviewReleased) {
+            cameraUtils.createCamera()
+            cameraUtils.startPreview()
+        }
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -209,6 +216,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         cameraUtils.stopPreivew()
         cameraUtils.destroyCamera()
+        isPreviewReleased = true
     }
 
     fun isPermissionOK(): Boolean {
@@ -278,36 +286,40 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
             aboutPopupMenu.showAsDropDown(menu, menu.width, 0)
         }
 
-        menuAppearAnimate = AlphaAnimation(0f,1f)
+        menuAppearAnimate = AlphaAnimation(0f, 1f)
         menuAppearAnimate?.duration = 300
-        menuAppearAnimate?.setAnimationListener(object :Animation.AnimationListener{
+        menuAppearAnimate?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
                 menu.visibility = View.VISIBLE
             }
+
             override fun onAnimationRepeat(animation: Animation?) {
             }
+
             override fun onAnimationEnd(animation: Animation?) {
             }
         })
 
-        menuDisAppearAnimate = AlphaAnimation(1f,0f)
+        menuDisAppearAnimate = AlphaAnimation(1f, 0f)
         menuDisAppearAnimate?.duration = 300
-        menuDisAppearAnimate?.setAnimationListener(object :Animation.AnimationListener{
+        menuDisAppearAnimate?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
             }
+
             override fun onAnimationRepeat(animation: Animation?) {
             }
+
             override fun onAnimationEnd(animation: Animation?) {
                 menu.visibility = View.INVISIBLE
             }
         })
     }
 
-    private fun showMenu(){
+    private fun showMenu() {
         menu.startAnimation(menuAppearAnimate)
     }
 
-    private fun hideMenu(){
+    private fun hideMenu() {
         menu.startAnimation(menuDisAppearAnimate)
     }
 
@@ -326,16 +338,17 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         }
     }
 
-    fun rePreview(){
+    fun rePreview() {
         cameraUtils.stopPreivew()
         cameraUtils.destroyCamera()
         cameraUtils.createCamera()
         cameraUtils.startPreview()
     }
 
-    private fun hideSystemButton(){
+    private fun hideSystemButton() {
         val view = window.decorView
-        val uiOption = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_FULLSCREEN
+        val uiOption =
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_FULLSCREEN
         view.systemUiVisibility = uiOption
     }
 

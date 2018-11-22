@@ -44,4 +44,8 @@
     <string name="Share_VLog_Title">分享延时摄影专家</string>
     <string name="Share_VLog_Text">Hey, 快来看看这个超酷的应用 《延时摄影专家》！</string>
     <string name="Share_To_Friend_Chooser_Title">分享给朋友</string>
+    <string name="title_activity_about">关于</string>
+    <string name="copy_right" translatable="false">Copyrights © %1$d</string>
+    <string name="About_desc">感谢使用《延时摄影专家》, 有任何问题或是建议请及时通知我们，谢谢！</string>
+    <string name="privacy_policy">隐私条款</string>
 </resources>

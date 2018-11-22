@@ -2,4 +2,5 @@
 <resources>
     <dimen name="menu_size">50dp</dimen>
     <dimen name="menu_padding">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

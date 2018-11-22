@@ -44,4 +44,8 @@
     <string name="Share_VLog_Title">Share VLogerMaster to friend</string>
     <string name="Share_VLog_Text">Hey, check this awesome app, you will like it, have fun! VLogMaster!</string>
     <string name="Share_To_Friend_Chooser_Title">Share to friend</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="copy_right" translatable="false">Copyrights © %1$d</string>
+    <string name="About_desc">Thanks for using VLogMaster, please feel free to contact us if you have any suggest or problem about this app, Thanks!</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

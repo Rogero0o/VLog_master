@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.roger.vlog_master">
 
-
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -14,14 +13,19 @@
             android:theme="@style/AppTheme">
         <activity
                 android:name=".MainActivity"
-                android:theme="@style/MaterialTheme"
                 android:launchMode="singleTask"
-                android:screenOrientation="landscape">
+                android:screenOrientation="landscape"
+                android:theme="@style/MaterialTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+                android:name=".AboutActivity"
+                android:label="@string/title_activity_about"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
