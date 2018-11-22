@@ -25,6 +25,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.util.Log
@@ -83,6 +84,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
         matchTextView.setLineWidth(Utils.dp2px(5f))
         matchTextView.setInTime(0.3f)
         matchTextView.loadingAniDuration = 300
+        matchTextView.setMatchAnimateRoundListener {
+            if(loadingContainer.visibility == View.VISIBLE) {
+                delayHandler.sendEmptyMessage(HANDLER_PREVIEW_WHAT)
+            }
+        }
     }
 
     private fun initJcodec() {
@@ -195,7 +201,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         cameraUtils.surfaceHolder = holder
-        delayHandler.sendEmptyMessageDelayed(HANDLER_PREVIEW_WHAT, 2450)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
