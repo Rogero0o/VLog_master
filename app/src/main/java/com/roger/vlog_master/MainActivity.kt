@@ -25,7 +25,6 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.util.Log
@@ -39,6 +38,7 @@ import com.roger.vlog_master.menu.AboutPopupWindow
 import com.roger.vlog_master.menu.ScreenPopupWindow
 import com.roger.vlog_master.menu.TimeIntervalPopupWindow
 import com.roger.vlog_master.menu.TimeLongPopupWindow
+import com.tencent.stat.StatService
 
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.OnPreviewFrameResult,
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, CameraUtils.On
 
     private fun initThirdPackage() {
         Hawk.init(this).build()
+        StatService.registerActivityLifecycleCallbacks(application)
     }
 
     private fun initView() {

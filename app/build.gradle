@@ -13,6 +13,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                //AI661SCYZ6WM 属于应用"延时摄影大师"独有的 Android AppKey, 用于配置SDK
+                MTA_APPKEY:"AI661SCYZ6WM",
+                //标注应用推广渠道用以区分新用户来源，可填写如应用宝，豌豆荚等
+                MTA_CHANNEL:"应用宝"
+        ]
     }
     buildTypes {
         release {
@@ -20,6 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {
@@ -38,4 +46,8 @@ dependencies {
     implementation 'com.roger.match.library:library:1.0.2'
     implementation "com.orhanobut:hawk:2.0.1"
     implementation 'com.github.medyo:android-about-page:1.2.4'
+    //MTA主包
+    implementation 'com.qq.mta:mta:3.4.2'
+    //MID基础包
+    implementation 'com.tencent.mid:mid:3.73-release'
 }
