@@ -16,7 +16,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 
 class CameraUtils private constructor() {
-    var cameraInstance: Camera?=null
+    var cameraInstance: Camera? = null
     var cameraDirection = false
     private var mPreviewListener: OnPreviewFrameResult? = null
     private var mHolderRef: WeakReference<SurfaceHolder>? = null
@@ -46,11 +46,6 @@ class CameraUtils private constructor() {
             }
             return result
         }
-
-    val previewFormat: Int
-        get() = if (cameraInstance == null) {
-            -1
-        } else cameraInstance!!.parameters.previewFormat
 
     var surfaceHolder: SurfaceHolder?
         get() = if (mHolderRef == null) {
@@ -220,12 +215,6 @@ class CameraUtils private constructor() {
             }
         }
         return isSupport
-    }
-
-    fun switchCamera() {
-        cameraDirection = !cameraDirection
-        createCamera()
-        startPreview()
     }
 
     fun setPreviewSize(width: Int, height: Int) {
